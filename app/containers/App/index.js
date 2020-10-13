@@ -35,8 +35,56 @@ export default function App() {
         titleTemplate="%s - React.js Boilerplate"
         defaultTitle="React.js Boilerplate"
       >
+        <script>
+          {`
+          window["adrum-start-time"] = new Date().getTime();
+           window['adrum-config'] = {
+            userEventInfo: {
+              "Ajax": function (context) {
+                var payload = null;
+                console.log("From userEventInfo:Ajax");
+                if (context.data) {
+                  // The URLSearchParams API does not work on IE/Edge
+                  payload = new URLSearchParams(context.data).toString();
+                } else if (context.data && context.data.indexOf("id") > -1) {
+                  // The URLSearchParams API does not work on IE/Edge
+                  var params = new URLSearchParams(context.data);
+                  params.set("title", "test from EUM");
+                  payload = params.toString();
+                } else {
+                  payload = "Payload is not available";
+                }
+                return {
+                  userData: {
+                    username: "xhr_user",
+                    issue: "218.50",
+                    payload: payload
+                  }
+                }
+              }
+            },
+              appKey: "SY-AAB-DKW",
+              adrumExtUrlHttp: "http://cdn.appdynamics.com",
+              adrumExtUrlHttps: "https://cdn.appdynamics.com",
+              beaconUrlHttp: "http://syd-col.eum-appdynamics.com",
+              beaconUrlHttps: "https://syd-col.eum-appdynamics.com",
+              resTiming: {"bufSize":200,"clearResTimingOnBeaconSend":true},
+              maxUrlLength:512,
+              page: {"captureTitle":true},
+              isZonePromise: true,
+              fetch: true
+          };
+          console.log("adrum-config after: %o", window["adrum-config"]);
+          `}
+        </script>
         <meta name="description" content="A React.js Boilerplate application" />
       </Helmet>
+      <Helmet
+        script={[{
+          type: 'text/javascript',
+          src: '//cdn.appdynamics.com/adrum/adrum-latest.js'
+        }]}
+      />
       <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />

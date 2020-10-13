@@ -20,6 +20,7 @@ import {
   makeSelectError,
 } from 'containers/App/selectors';
 import H2 from 'components/H2';
+import H3 from 'components/H3';
 import ReposList from 'components/ReposList';
 import AtPrefix from './AtPrefix';
 import CenteredSection from './CenteredSection';
@@ -28,7 +29,7 @@ import Input from './Input';
 import Section from './Section';
 import messages from './messages';
 import { loadRepos } from '../App/actions';
-import { changeUsername } from './actions';
+import { changeUsername, changeValue } from './actions';
 import { makeSelectUsername } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -42,6 +43,9 @@ export function HomePage({
   repos,
   onSubmitForm,
   onChangeUsername,
+  testValue,
+  onChangeValue
+
 }) {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
@@ -96,6 +100,23 @@ export function HomePage({
           </Form>
           <ReposList {...reposListProps} />
         </Section>
+        <Section>
+          <H3>Test</H3>
+          <Form onSubmit={onSubmitForm}>
+            <label htmlFor="testEvent">
+              <FormattedMessage {...messages.trymeMessage} />
+              <AtPrefix>
+                <FormattedMessage {...messages.trymeAtPrefix} />
+              </AtPrefix>
+              <Input
+                id="testEvent"
+                type="text"
+                value={testValue}
+                onChange={onChangeValue}
+              />
+            </label>
+          </Form>
+        </Section>
       </div>
     </article>
   );
@@ -108,6 +129,8 @@ HomePage.propTypes = {
   onSubmitForm: PropTypes.func,
   username: PropTypes.string,
   onChangeUsername: PropTypes.func,
+  testValue: PropTypes.string,
+  onChangeValue: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -120,6 +143,7 @@ const mapStateToProps = createStructuredSelector({
 export function mapDispatchToProps(dispatch) {
   return {
     onChangeUsername: evt => dispatch(changeUsername(evt.target.value)),
+    onChangeValue: evt => dispatch(changeValue(evt.target.value)),
     onSubmitForm: evt => {
       if (evt !== undefined && evt.preventDefault) evt.preventDefault();
       dispatch(loadRepos());
