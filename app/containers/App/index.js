@@ -39,30 +39,6 @@ export default function App() {
           {`
           window["adrum-start-time"] = new Date().getTime();
            window['adrum-config'] = {
-            userEventInfo: {
-              "Ajax": function (context) {
-                var payload = null;
-                console.log("From userEventInfo:Ajax");
-                if (context.data) {
-                  // The URLSearchParams API does not work on IE/Edge
-                  payload = new URLSearchParams(context.data).toString();
-                } else if (context.data && context.data.indexOf("id") > -1) {
-                  // The URLSearchParams API does not work on IE/Edge
-                  var params = new URLSearchParams(context.data);
-                  params.set("title", "test from EUM");
-                  payload = params.toString();
-                } else {
-                  payload = "Payload is not available";
-                }
-                return {
-                  userData: {
-                    username: "xhr_user",
-                    issue: "218.50",
-                    payload: payload
-                  }
-                }
-              }
-            },
               appKey: "SY-AAB-DKW",
               adrumExtUrlHttp: "http://cdn.appdynamics.com",
               adrumExtUrlHttps: "https://cdn.appdynamics.com",

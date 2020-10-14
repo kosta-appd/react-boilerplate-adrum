@@ -26,16 +26,15 @@ const homeReducer = (state = initialState, action) =>
         break;
       case CHANGE_VALUE:
         console.log("Change value: " + action.testValue);
-        sendCustomData();
+        sendCustomData(action.testValue);
         break;  
     }
   });
 
-const sendCustomData = () => {
+const sendCustomData = (dataToSend) => {
   var customEvent = new ADRUM.events.Ajax();
-  customEvent.url("https://testurl");
+  customEvent.url("https://customaction");
   customEvent.method('POST');
-  customEvent.dataObject({data: {msgSent: "msgSent"}});
   customEvent.markSendTime(0);
   customEvent.markFirstByteTime(0);
   customEvent.markRespAvailTime(0);
